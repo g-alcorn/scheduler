@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "components/InterviewerListItem.scss";
 const classnames = require('classnames');
 
 export default function InterviewerListItem(props) {
-  //const [interviewer, setInterviewer] = useState('');
+  const [interviewer, onChange] = useState([]);
   const interviewerClass = classnames({
     "interviewers__item": !props.selected,
     "interviewers__item--selected": props.selected
