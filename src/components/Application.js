@@ -54,7 +54,24 @@ export default function Application(props) {
   };
   
   function removeInterview(id) {
-    
+    return axios.delete(`http://localhost:8001/api/appointments/${id}`)
+      .then((response) => {
+        console.log("Deleted " + response.status);
+        const appointment = {
+          ...state.appointments[id],
+          interview: null
+        };
+        const appointments = {
+          ...state.appointments,
+          [id]: appointment
+        };
+
+        setState({ ...state, appointments });
+      })
+      .catch((error) => {
+        console.log(error);
+        setState(prev=> ({ ...state, appointments }));
+      })
   }
 
 
