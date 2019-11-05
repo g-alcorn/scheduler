@@ -1,25 +1,6 @@
 export function getAppointmentsForDay(state, day) {
-  let dayIndex = null;
+  let dayIndex = determineDayIndex(day);
   let response = [];
-  switch (day) {
-    case "Monday":
-      dayIndex = 0;
-      break;
-    case "Tuesday":
-      dayIndex = 1;
-      break;
-    case "Wednesday":
-      dayIndex = 2;
-      break;
-    case "Thursday":
-      dayIndex = 3;
-      break;
-    case "Friday":
-      dayIndex = 4;
-      break;
-    default:
-      return [];
-  }
 
   if (state.days[dayIndex]) {
     for (let i = 0; i < state.days[dayIndex].appointments.length; i++) {
@@ -34,6 +15,23 @@ export function getAppointmentsForDay(state, day) {
   return response;
 };
 
+export function getInterviewersForDay(state, day) {
+  let dayIndex = determineDayIndex(day);
+  let response = [];
+
+  if (state.days[dayIndex]) {
+    for (let i = 0; i < state.days[dayIndex].interviewers.length; i++) {
+      for (let interviewer in state.interviewers) {
+        if (state.interviewers[interviewer].id === state.days[dayIndex].interviewers[i]) {
+          response.push(state.interviewers[interviewer]);
+        }
+      }
+    }
+  }
+
+  return response;
+}
+
 export function getInterview(state, interview) {
   if (!interview) {
     return null;
@@ -46,4 +44,21 @@ export function getInterview(state, interview) {
   }
   
   return response;
+}
+
+const determineDayIndex = function(day) {
+  switch (day) {
+    case "Monday":
+      return 0;
+    case "Tuesday":
+      return 1;
+    case "Wednesday":
+      return 2;
+    case "Thursday":
+      return 3;
+    case "Friday":
+      return 4;
+    default:
+      return [];
+  }
 }
