@@ -3,7 +3,7 @@ import axios from "axios";
 
 import "components/Application.scss";
 
-import { getAppointmentsForDay, getInterview } from "../helpers/selectors";
+import { getAppointmentsForDay, getInterviewersForDay, getInterview } from "../helpers/selectors";
 import Appointment from "./Appointment/index";
 import DayList from "components/DayList";
 
@@ -31,14 +31,47 @@ export default function Application(props) {
     });
   }, []);
 
-  const appointments = getAppointmentsForDay(state, state.day)
+  function bookInterview(id, interview) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+    ...state.appointments,
+    [id]: appointment
+    };
+
+    return axios.put(`http://localhost:8001/api/appointments/${id}`, appointment)
+      .then((response) => {
+        console.log("Status code " + response.status);
+        setState({...state, appointments});
+      })
+      .catch((error) => {
+        console.log(error);
+        appointments.appointments.pop();
+        setState(prev => ({ ...state, appointments }));
+      });
+  };
+  
+  function removeInterview(id) {
+    
+  }
+
+
+  const appointments = getAppointmentsForDay(state, state.day);
+  const interviewers = getInterviewersForDay(state, state.day);
+  
   const schedule = appointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
+    
     return (
     <Appointment 
       key={appointment.id}
       {...appointment}
+      interviewers={interviewers}
       interview={interview}
+      bookInterview={bookInterview}
+      onDelete={removeInterview}
     />)
   });
 
