@@ -51,6 +51,7 @@ export default function Appointment(props) {
   };
 
   function updateAppointment(name, interviewerId) {
+    //event.preventDefault();
     transition(SAVING)
 
     props
