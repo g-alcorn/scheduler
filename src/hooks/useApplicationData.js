@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer } from "react";
-import axios from "axios";
+import axios from "../__mocks__/axios";
 import { statement } from "@babel/template";
 const SET_DAY = "SET_DAY";
 const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
@@ -89,9 +89,9 @@ export default function useApplicationData() {
   //GETS DAYS ONCE UPON PAGE LOAD
   useEffect(() => {
     Promise.all([
-      axios.get(`http://localhost:8001/api/days`),
-      axios.get(`http://localhost:8001/api/appointments`),
-      axios.get(`http://localhost:8001/api/interviewers`)
+      axios.get(`/api/days`),
+      axios.get(`/api/appointments`),
+      axios.get(`/api/interviewers`)
     ]).then((all) => {
       const [days, appointments, interviewers] = all;
       const newState = {
