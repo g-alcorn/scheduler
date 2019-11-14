@@ -6,7 +6,7 @@ import Application from "components/Application";
 
 afterEach(cleanup);
 describe("Application", () => {
-  xit("renders without crashing", () => {
+  it("renders without crashing", () => {
     render(<Application />);
   });
 
