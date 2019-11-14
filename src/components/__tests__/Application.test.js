@@ -24,24 +24,32 @@ describe("Application", () => {
     await waitForElement(() => getByText(container, "Archie Cohen"));
     const appointment = getAllByTestId(container, "appointment")[0];
 
+    //click add button
     fireEvent.click(getByAltText(appointment, "Add"));
 
+    //type name in field
     fireEvent.change(getByPlaceholderText(appointment, /Enter Student Name/i), {
       target: { value: "Archie Cohen" }
     });
 
+    //select interviewer
     fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
 
+    //save interview
     fireEvent.click(getByText(appointment, "Save"));
 
+    //check for loading
     expect(getByText(appointment, "Saving...")).toBeInTheDocument();
     
+    //wait for saved appt to show up
     await waitForElement(() => getByText(appointment, "Archie Cohen"));
 
+    //find element in sidebar
     const day = getAllByTestId(container, "day").find(day =>
       queryByText(day, "Monday")
     );
     
+    //check spots remaining
     expect(getByText(day, "no spots remaining")).toBeInTheDocument();
   });
 
@@ -77,25 +85,31 @@ describe("Application", () => {
     );
     expect(getByText(day, "2 spots remaining")).toBeInTheDocument();
 
-    debug();
+    //debug();
   });
 
   it("Shows error when no student name entered", async () => {
     const { container } = render(<Application />);
 
+    //wait for page load
     await waitForElement(() => getByText(container, "Archie Cohen"));
     const appointment = getAllByTestId(container, "appointment")[0];
 
+    //open form
     fireEvent.click(getByAltText(appointment, "Add"));
 
+    //DONT enter text
     fireEvent.change(getByPlaceholderText(appointment, /Enter Student Name/i), {
       target: { value: "" }
     });
 
+    //select interviewer
     fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
 
+    //click save
     fireEvent.click(getByText(appointment, "Save"));
 
+    //expect error
     expect(getByText(appointment, "Student name cannot be blank")).toBeInTheDocument();
 
   });
@@ -103,17 +117,22 @@ describe("Application", () => {
   it("Shows error when no interviewer selected", async () => {
     const { container } = render(<Application />);
 
+    //wait for page load
     await waitForElement(() => getByText(container, "Archie Cohen"));
     const appointment = getAllByTestId(container, "appointment")[0];
 
+    //click add
     fireEvent.click(getByAltText(appointment, "Add"));
 
+    //type name
     fireEvent.change(getByPlaceholderText(appointment, /Enter Student Name/i), {
       target: { value: "Griffin" }
     });
 
+    //click save WITHOUT selecting interviewer
     fireEvent.click(getByText(appointment, "Save"));
 
+    //expect error
     expect(getByText(appointment, "Interviewer must be selected")).toBeInTheDocument();
 
   })
