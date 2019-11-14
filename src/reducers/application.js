@@ -45,6 +45,7 @@ export default function reducer(state, action) {
         console.log(new Error().stack)
         const previous = state;
         
+        //complicated destructuring to replicate state object
         return {
           ...state,
           days: [

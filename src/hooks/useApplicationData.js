@@ -17,7 +17,7 @@ export default function useApplicationData() {
     interviewers: {}
   });
 
-
+  //CHANGE STATE WHEN NAVIGATING TO OTHER DAY
   const setDay = day => dispatch({ type: SET_DAY, value: day });
 
   //GETS DAYS ONCE UPON PAGE LOAD
