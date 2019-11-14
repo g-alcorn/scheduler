@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useReducer } from "react";
-import axios from "../__mocks__/axios";
+//import axios from "../__mocks__/axios";
+import axios from "axios";
 import { statement } from "@babel/template";
 const SET_DAY = "SET_DAY";
 const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
