@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 //import axios from "../__mocks__/axios";
 import axios from "axios";
-import { statement } from "@babel/template";
-const SET_DAY = "SET_DAY";
-const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
-const SET_INTERVIEW = "SET_INTERVIEW";
+import reducer, {
+  SET_DAY,
+  SET_APPLICATION_DATA,
+  SET_INTERVIEW
+} from "../reducers/application";
+
 
 export default function useApplicationData() {
   //INITIALIZE EMPTY DAY LIST IN PROGRAM STATE
@@ -17,75 +19,6 @@ export default function useApplicationData() {
 
 
   const setDay = day => dispatch({ type: SET_DAY, value: day });
-
-  //RETURN NEW STATE OBJECT WITH SPOTS REMAINING UPDATED
-  function changeSpots(state, action) {
-    if (action.spots === 1 || action.spots === -1) {
-      //add action.spots
-      //will be + or - as necessary
-      let dayIndex = null;
-      switch(state.day) {
-        case "Monday":
-          dayIndex = 0;
-          break;
-        case "Tuesday":
-          dayIndex = 1;
-          break;
-        case "Wednesday":
-          dayIndex = 2;
-          break;
-        case "Thursday":
-          dayIndex = 3;
-          break;
-        case "Friday":
-          dayIndex = 4;
-          break;
-      }
-
-      console.log(new Error().stack)
-      const previous = state;
-      
-      return {
-        ...state,
-        days: [
-          ...state.days.slice(0, dayIndex),
-          {
-            ...state.days[dayIndex],
-            spots: previous.days[dayIndex].spots + action.spots
-          },
-          ...state.days.slice(dayIndex + 1)
-        ],
-        appointments: {
-          ...state.appointments, 
-          [action.value.id]: action.value
-        }    
-      }
-    } else {
-      return { ...state, 
-        appointments: {
-          ...state.appointments, 
-          [action.value.id]: action.value
-        }
-      }
-    }
-  }
-  
-  //REDUCER responds to dispatch functiom
-  function reducer(state, action) {
-    switch (action.type) {
-      case SET_DAY:
-        return { ...state, day: action.value}
-      case SET_APPLICATION_DATA:
-        return { day: action.value.day, days: action.value.days, appointments: action.value.appointments, interviewers: action.value.interviewers}
-      case SET_INTERVIEW: {
-        return changeSpots(state, action);
-      }
-      default:
-        throw new Error(
-          `Tried to reduce with unsupported action type: ${action.type}`
-        );
-    }
-  }
 
   //GETS DAYS ONCE UPON PAGE LOAD
   useEffect(() => {
