@@ -3,6 +3,7 @@ import InterviewerList from "../InterviewerList";
 import Button from "../Button";
 
 export default function Form(props) {
+  //State management
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [name, setName] = useState(props.name || "");
   const [error, setError] = useState("");
@@ -21,6 +22,7 @@ export default function Form(props) {
     setName(event.target.value);
   };
 
+  //Check formatting of names
   const validate = function(name, interviewer) {
     if (name === "") {
       setError("Student name cannot be blank");
@@ -57,10 +59,23 @@ export default function Form(props) {
       </section>
       <section className="appointment__card-right">
         <section className="appointment__actions">
-            <Button danger data-testid={"button--cancel"} onClick={cancel}>Cancel</Button>
-            <Button confirm data-testid={"button--save"} onClick={(e) => {
-              e.preventDefault();
-              validate(name, interviewer)}}>Save</Button>
+            <Button 
+              danger 
+              data-testid={"button--cancel"} 
+              onClick={cancel}
+            >
+              Cancel
+            </Button>
+            <Button 
+              confirm 
+              data-testid={"button--save"} 
+              onClick={(e) => {
+                e.preventDefault();
+                validate(name, interviewer)
+              }}
+            >
+              Save
+            </Button>
         </section>
       </section>
     </main>      

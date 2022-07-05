@@ -9,7 +9,7 @@ import reducer, {
 
 
 export default function useApplicationData() {
-  //INITIALIZE EMPTY DAY LIST IN PROGRAM STATE
+  //Initialize data structure for state management
   const [state, dispatch] = useReducer(reducer, {
     day: "Monday",
     days: [],
@@ -17,10 +17,10 @@ export default function useApplicationData() {
     interviewers: {}
   });
 
-  //CHANGE STATE WHEN NAVIGATING TO OTHER DAY
+  //Change state when navigating within app
   const setDay = day => dispatch({ type: SET_DAY, value: day });
 
-  //GETS DAYS ONCE UPON PAGE LOAD
+  //On page load, download all appointment data from server
   useEffect(() => {
     Promise.all([
       axios.get(`/api/days`),
