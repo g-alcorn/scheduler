@@ -7,7 +7,6 @@ import reducer, {
   SET_INTERVIEW
 } from "../reducers/application";
 
-
 export default function useApplicationData() {
   //Initialize data structure for state management
   const [state, dispatch] = useReducer(reducer, {
@@ -21,6 +20,7 @@ export default function useApplicationData() {
   const setDay = day => dispatch({ type: SET_DAY, value: day });
 
   //On page load, download all appointment data from server
+  //Load data into state
   useEffect(() => {
     Promise.all([
       axios.get(`/api/days`),
@@ -38,7 +38,6 @@ export default function useApplicationData() {
     });
   }, [state.day]);
 
-
   //Put new interview data in DB and then dispatch state update
   function bookInterview(id, interview) {
     const appointment = {
@@ -49,7 +48,6 @@ export default function useApplicationData() {
     return axios.put(`http://localhost:8001/api/appointments/${id}`, appointment)
       .then((response) => {
         console.log("Status code " + response.status);
-        //setState({...state, appointments});
         dispatch({ type: SET_INTERVIEW, value: appointment, spots: -1 });
       })
       .catch((error) => {
@@ -99,15 +97,16 @@ export default function useApplicationData() {
     };
 
     return axios.delete(`http://localhost:8001/api/appointments/${id}`)
-    .then(() => {
-      axios.put(`http://localhost:8001/api/appointments/${id}`, interview)
-        .then(() => {
-          dispatch({ type: SET_INTERVIEW, value: interview});
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-    });
+      .then(() => {
+        axios.put(`http://localhost:8001/api/appointments/${id}`, interview)
+          .then(() => {
+            dispatch({ type: SET_INTERVIEW, value: interview });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    );
   };
 
   return { state, setDay, bookInterview, updateInterview, removeInterview };
